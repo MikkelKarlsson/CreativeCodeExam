@@ -1,10 +1,12 @@
 const video = document.getElementById('video')
 
+
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
     faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
-    faceapi.nets.faceExpressionNet.loadFromUri('./models')
+    faceapi.nets.faceExpressionNet.loadFromUri('./models'),
+    faceapi.nets.recognizeFaceExpressions
   ]).then(startVideo)
 
 function startVideo() {
@@ -28,6 +30,20 @@ video.addEventListener('play', () => {
         faceapi.draw.drawDetections(canvas, resizedDetections)
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+
+      //console.log(detections);
+      this.yourExpression(detections);
+
     }, 100)
 })
+
+function yourExpression(detections){
+  detections.forEach(element => {
+    console.log(element.expressions.happy);
+    if(element.expressions.happy > 0.6){
+      console.log("You Are Happy");
+    }
+  });
+
+}
 

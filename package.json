@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
+    "face-api.js": "^0.22.2",
     "init": "^0.1.2",
     "nodemon": "^2.0.7"
   },
