@@ -7,15 +7,21 @@
     <title>Document</title>
     <script defer src="js/face-api.min.js"> </script>
     <script defer src="js/script.js"></script>
+    <!--<script defer src="js/game.js"></script>-->
     <link rel="stylesheet" href="game.css">
+    <link href="https://unpkg.com/tailwindcss@%5E2/dist/tailwind.min.css" rel="stylesheet">
+
 
 </head>
 <body style="background-color: beige;">
 
-    <video id="video" width="1000" height="800" autoplay muted></video>
 
-    <h1>Hello gamer</h1>
-    <h1>Zoom out to 50%</h1>
+    <div class="flex flex-row">
+        <video id="video" width="1000" height="800" autoplay muted></video>
+        <canvas id="game" class="bg-red-500 w-full" width="1000" height="800" autoplay muted>Hej</canvas>
+    </div>
+
+    
 
 </body>
 
