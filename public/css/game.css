@@ -1,0 +1,22 @@
+ 
+  body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url("futurebg.jpg");
+      background-repeat: no-repeat;
+      font-family: "AquireLight";
+      overflow: hidden;
+  }
+  
+  canvas {
+      position: absolute;
+  }
+    
+
+  
+

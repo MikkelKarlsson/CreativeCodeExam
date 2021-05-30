@@ -15,6 +15,13 @@
         res.sendFile(`${__dirname}/public/index.html`);
     });
 
+    app.get('/yourface', (req, res) => {
+        res.sendFile(`${__dirname}/public/facecamrec.html`);
+    });
+
+    app.get('/thegame', (req, res) => {
+        res.sendFile(`${__dirname}/public/facegame.html`);
+    });
 
 
 //Define port
