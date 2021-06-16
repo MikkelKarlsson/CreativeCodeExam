@@ -31,7 +31,7 @@ video.addEventListener('play', () => {
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
 
-      console.log(detections);
+      //console.log(detections);
       this.yourExpression(detections);
 
     }, 100)
@@ -102,7 +102,7 @@ rectangle = {
   height:32,
   jumping:true,
   width:32,
-  x:144, // center of the canvas
+  x:0, // center of the canvas
   x_velocity:0,
   y:0,
   y_velocity:0
@@ -111,7 +111,7 @@ rectangle = {
 enemy = {
   height:32,
   width:32,
-  x:144, // center of the canvas
+  x:320, // center of the canvas
   x_velocity:0,
   y:0,
   y_velocity:0
@@ -160,7 +160,7 @@ controller = {
           case "angry":// right key
             controller.right = true;
           break;
-          case "neutral":// right key
+          case "neutral":// up key
           controller.down = true;
           break;
           
@@ -238,8 +238,6 @@ loop = function() {
     }
 
 
-
-
   //Background
   context.fillStyle = "green";
   context.fillRect(0, 0, 320, 180);// x, y, width, height
@@ -258,6 +256,8 @@ loop = function() {
   context.fill();
   context.stroke();
 
+  hitReg(rectangle, enemy);
+
 
 
 
@@ -266,6 +266,22 @@ loop = function() {
   window.requestAnimationFrame(loop);
 
 };
+
+
+function hitReg(player, enemy){
+  //Player should not be inside the range of enemy
+  if (player.x < enemy.x + enemy.width &&
+    player.x + player.width > enemy.x &&
+    player.y < enemy.y + enemy.height &&
+    player.y + player.height > enemy.y) {
+     alert("U got Smashed!")
+     enemy.x = 320;
+     player.x = 0;
+ }
+
+  console.log("hitReg");
+
+}
 
 window.addEventListener("keydown", controller.keyListener)
 window.addEventListener("keyup", controller.keyListener);
