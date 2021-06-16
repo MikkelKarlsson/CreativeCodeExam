@@ -104,7 +104,7 @@ rectangle = {
   width:32,
   x:30, 
   x_velocity:0,
-  y:30,
+  y:80,
   y_velocity:0
 };
 
@@ -186,6 +186,12 @@ controller = {
     }
   };
 
+
+
+
+
+let counter = 0;
+
 loop = function() {
   //Bug: There was two trues at the same time, that made the controlling of the player buggy when moving up and down. The solution was to set everything else to false inside of the case inside the switch.
   console.log(controller);
@@ -210,24 +216,19 @@ loop = function() {
     //148
   }
 
-  /*// if rectangle is going off the left of the screen
-  if (rectangle.y = 0) {
-
-    alert("U died");
-
-  } /*else if (rectangle.x = 320-32) {
-
-    alert("Floor is lava")
-
-  }*/
-
   
-    // if enemy is going off the left of the screen
-    enemy.x -= 0.5
-    if (enemy.x < -32) {
-      enemy.y = Math.floor(Math.random() * 179);
-      enemy.x = 320
-    }
+  // if enemy is going off the left of the screen
+  enemy.x -= 0.5
+  if (enemy.x < -32) {
+    enemy.y = Math.floor(Math.random() * 179);
+    enemy.x = 320
+  }
+
+  //Scoreboard counter
+  counter++;
+  document.getElementById("score").innerHTML = counter;
+
+
 
 
   //Background
@@ -248,7 +249,10 @@ loop = function() {
   context.fill();
   context.stroke();
 
+  hitLeftWall(rectangle);
   hitReg(rectangle, enemy);
+  hitFloor(rectangle);
+  hitTop(rectangle);
 
 
 
@@ -266,13 +270,41 @@ function hitReg(player, enemy){
     player.x + player.width > enemy.x &&
     player.y < enemy.y + enemy.height &&
     player.y + player.height > enemy.y) {
-     alert("U got Smashed!")
+     endgameAlert("U got Smashed!");
      enemy.x = 320;
      player.x = 0;
  }
 
   console.log("hitReg");
 
+}
+
+function hitLeftWall(player){
+  if(player.x < 0){
+    player.x = 0
+  }
+}
+
+function hitFloor(player){
+  if(player.y > 147){
+    endgameAlert("The Floor is Lava... ")
+    player.y = 30;
+    enemy.x = 320;
+  }
+}
+
+function hitTop(player){
+  if(player.y <= 0){
+    endgameAlert("The roof is on fire!")
+    player.y = 30;
+    enemy.x = 320;
+
+  }
+}
+
+function endgameAlert(text){
+  alert(text + "Your Score Was " + counter);
+  counter = 0; 
 }
 
 window.addEventListener("keydown", controller.keyListener)
