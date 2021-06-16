@@ -31,7 +31,7 @@ video.addEventListener('play', () => {
         faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
         faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
 
-      //console.log(detections);
+      console.log(detections);
       this.yourExpression(detections);
 
     }, 100)
@@ -51,14 +51,14 @@ function yourExpression(detections){
     else if(element.expressions.angry > 0.9){
       //console.log("You Are Happy");
       controller.faceListener("angry");
-    }else {
-      controller.faceListener("Et eller andet");
     }
-
-    
-
+    else if(element.expressions.neutral > 0.9){
+      //console.log("You Are Happy");
+      controller.faceListener("neutral");
+    }else {
+      controller.faceListener("Et Eller Andet :)")
+    }
   });
-
 }
 
 
@@ -88,27 +88,17 @@ function line(){
 }*/
 
 
-var context, controller, rectangle, loop, obstacle;
+var context, controller, rectangle, loop, enemy;
 
 context = document.querySelector("canvas").getContext("2d");
 
 context.canvas.height = 180;
 context.canvas.width = 320;
 
-obstacle = {
 
-  height:32,
-  width:32,
-  x:144, // center of the canvas
-  x_velocity:0,
-  y:0,
-  y_velocity:0
-
-};
 
 
 rectangle = {
-
   height:32,
   jumping:true,
   width:32,
@@ -116,7 +106,15 @@ rectangle = {
   x_velocity:0,
   y:0,
   y_velocity:0
+};
 
+enemy = {
+  height:32,
+  width:32,
+  x:144, // center of the canvas
+  x_velocity:0,
+  y:0,
+  y_velocity:0
 };
 
 controller = {
@@ -124,6 +122,8 @@ controller = {
   left:false,
   right:false,
   up:false,
+  down:false,
+
   keyListener:function(event) {
 
     var key_state = (event.type == "keydown")?true:false;
@@ -138,6 +138,10 @@ controller = {
       break;
       case 39:// right key
         controller.right = key_state;
+      break;
+      case 40:// right down
+        controller.down = key_state;
+        //console.log(key_state);
       break;
 
     }
@@ -156,11 +160,16 @@ controller = {
           case "angry":// right key
             controller.right = true;
           break;
+          case "neutral":// right key
+          controller.down = true;
+          break;
           
+          //We set every controller to false, because it would keep the expression without reseting.
           default: 
             controller.left = false;
             controller.up = false;
             controller.right = false;
+            controller.down = false;
           break;
         }
     }
@@ -168,12 +177,12 @@ controller = {
 
 loop = function() {
 
-  if (controller.up && rectangle.jumping == false) {
+  if (controller.up && rectangle.y > 0) {
 
-    rectangle.y_velocity -= 100;
-    rectangle.jumping = true;
+    rectangle.y -= 0.5;
 
   }
+
 
   if (controller.left) {
 
@@ -182,61 +191,75 @@ loop = function() {
   }
 
   if (controller.right) {
-
     rectangle.x_velocity += 0.5;
 
   }
 
-  rectangle.y_velocity += 0.3;// gravity
+  if (controller.down && rectangle.y < 148 ) {
+
+    rectangle.y += 0.5;
+    //console.log(rectangle.y);
+    //console.log(rectangle.y_velocity);
+
+  }
+
+  //rectangle.y_velocity += 0.3;// gravity
   rectangle.x += rectangle.x_velocity;
   rectangle.y += rectangle.y_velocity;
   rectangle.x_velocity *= 0.1;// friction
-  rectangle.y_velocity *= 0.1;// friction
+  //rectangle.y_velocity *= 0.1;// friction
 
   // if rectangle is falling below floor line
-  if (rectangle.y > 180 - 16 - 32) {
+  /*if (rectangle.y > 180 - 16 - 32) {
 
     rectangle.jumping = false;
     rectangle.y = 180 - 16 - 32;
     rectangle.y_velocity = 0;
 
-  }
+  }*/
 
   // if rectangle is going off the left of the screen
-  if (rectangle.x < -32) {
+  if (rectangle.x < 0) {
 
-    rectangle.x = 320;
+    rectangle.x = 0;
 
-  } else if (rectangle.x > 320) {// if rectangle goes past right boundary
+  } else if (rectangle.x > 320-32) {// if rectangle goes past right boundary
 
-    rectangle.x = -32;
-
-  }
-
-  if (obstacle.x < -32) {
-
-    obstacle.x = 320;
+    rectangle.x = 320-32;
 
   }
 
-  context.fillStyle = "#202020";
+  enemy.x -= 0.5
+
+    // if rectangle is going off the left of the screen
+    if (enemy.x < -32) {
+      enemy.y = Math.floor(Math.random() * 179);
+      enemy.x = 320
+    }
+
+
+
+
+  //Background
+  context.fillStyle = "green";
   context.fillRect(0, 0, 320, 180);// x, y, width, height
+
+  //Player
   context.fillStyle = "#ff0000";// hex for red
   context.beginPath();
   context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   context.fill();
-  context.strokeStyle = "#202830";
-  context.lineWidth = 4;
+  context.stroke();
+
+  //Enemy
+  context.fillStyle = "yellow";
   context.beginPath();
-  context.moveTo(0, 164);
-  context.lineTo(320, 164);
+  context.rect(enemy.x, enemy.y, enemy.width, enemy.height);
+  context.fill();
   context.stroke();
 
 
-  //Obstacle
-  context.beginPath();
-  context.rect(obstacle.x, 130, obstacle.width, obstacle.height);  
-  context.stroke();
+
 
 
   // call update when the browser is ready to draw again
