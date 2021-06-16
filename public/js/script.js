@@ -102,9 +102,9 @@ rectangle = {
   height:32,
   jumping:true,
   width:32,
-  x:0, // center of the canvas
+  x:30, 
   x_velocity:0,
-  y:0,
+  y:30,
   y_velocity:0
 };
 
@@ -150,17 +150,28 @@ controller = {
     faceListener:function(expression) {
       console.log(expression);
         switch(expression) {
-          
           case "surprised":// left key
             controller.left = true;
+            controller.right = false;
+            controller.up = false;
+            controller.down = false;
           break;
           case "happy":// up key
-            controller.up = true;
+          controller.left = false;
+          controller.right = false;
+          controller.up = true;
+          controller.down = false;
           break;
           case "angry":// right key
-            controller.right = true;
+          controller.left = false;
+          controller.right = true;
+          controller.up = false;
+          controller.down = false;
           break;
           case "neutral":// up key
+          controller.left = false;
+          controller.right = false;
+          controller.up = false;
           controller.down = true;
           break;
           
@@ -176,62 +187,43 @@ controller = {
   };
 
 loop = function() {
+  //Bug: There was two trues at the same time, that made the controlling of the player buggy when moving up and down. The solution was to set everything else to false inside of the case inside the switch.
+  console.log(controller);
 
   if (controller.up && rectangle.y > 0) {
-
     rectangle.y -= 0.5;
-
+    console.log(rectangle.y);
+    //147.5
   }
 
-
   if (controller.left) {
-
-    rectangle.x_velocity -= 0.5;
-
+    rectangle.x -= 0.5;
   }
 
   if (controller.right) {
-    rectangle.x_velocity += 0.5;
-
+    rectangle.x += 0.5;
   }
 
   if (controller.down && rectangle.y < 148 ) {
-
     rectangle.y += 0.5;
-    //console.log(rectangle.y);
-    //console.log(rectangle.y_velocity);
-
+    console.log(rectangle.y);
+    //148
   }
 
-  //rectangle.y_velocity += 0.3;// gravity
-  rectangle.x += rectangle.x_velocity;
-  rectangle.y += rectangle.y_velocity;
-  rectangle.x_velocity *= 0.1;// friction
-  //rectangle.y_velocity *= 0.1;// friction
+  /*// if rectangle is going off the left of the screen
+  if (rectangle.y = 0) {
 
-  // if rectangle is falling below floor line
-  /*if (rectangle.y > 180 - 16 - 32) {
+    alert("U died");
 
-    rectangle.jumping = false;
-    rectangle.y = 180 - 16 - 32;
-    rectangle.y_velocity = 0;
+  } /*else if (rectangle.x = 320-32) {
+
+    alert("Floor is lava")
 
   }*/
 
-  // if rectangle is going off the left of the screen
-  if (rectangle.x < 0) {
-
-    rectangle.x = 0;
-
-  } else if (rectangle.x > 320-32) {// if rectangle goes past right boundary
-
-    rectangle.x = 320-32;
-
-  }
-
-  enemy.x -= 0.5
-
-    // if rectangle is going off the left of the screen
+  
+    // if enemy is going off the left of the screen
+    enemy.x -= 0.5
     if (enemy.x < -32) {
       enemy.y = Math.floor(Math.random() * 179);
       enemy.x = 320
