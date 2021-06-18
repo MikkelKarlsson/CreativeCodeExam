@@ -232,18 +232,18 @@ loop = function() {
 
 
   //Background
-  context.fillStyle = "green";
+  context.fillStyle = "#38556b";
   context.fillRect(0, 0, 320, 180);// x, y, width, height
 
   //Player
-  context.fillStyle = "#ff0000";// hex for red
+  context.fillStyle = "#c2d3e4";
   context.beginPath();
   context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   context.fill();
   context.stroke();
 
   //Enemy
-  context.fillStyle = "yellow";
+  context.fillStyle = "#4c646c";
   context.beginPath();
   context.rect(enemy.x, enemy.y, enemy.width, enemy.height);
   context.fill();

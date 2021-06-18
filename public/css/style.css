@@ -22,6 +22,17 @@ body {
 canvas {
     position: absolute;
 }
+
+#headline {
+  height: 300px;
+  width: 400px; /** Use 100% to fill the width of the page **/
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  color:rgba(8, 8, 8, 0.3)
+}
   
   div {
     display: flex;
