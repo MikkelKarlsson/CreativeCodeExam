@@ -203,7 +203,12 @@ loop = function() {
 
   //Scoreboard counter
   counter++;
-  document.getElementById("score").innerHTML = counter;
+  document.getElementById("score").innerHTML = "Your score: " + counter;
+
+  //Movement showcaser
+  document.getElementById("movement").innerHTML = "<br /><br />Up: Be Happy!<br />Down: Be neutral!<br />Right: Be Angry!<br />Left: Be Suprised!";
+
+
 
 
 
