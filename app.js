@@ -25,7 +25,7 @@
 
 
 //Define port
-const port = 8080;
+const port = 80;
 
 //Listenen to the port
 app.listen(port, (error) => {
