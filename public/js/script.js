@@ -65,29 +65,6 @@ function yourExpression(detections){
 // CANVAS GAME
 //___________________________________________________________
 
-/*const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-let context, controller, rectangle, loop;
-
-square();
-line();
-
-
-function square(){
-    ctx.beginPath();
-    ctx.rect(20, 20, 80, 80);
-    ctx.stroke();   
-}
-
-
-function line(){
-    ctx.beginPath();
-    ctx.rect(0, 600, 1000, 20);
-    ctx.stroke(); 
-}*/
-
-
 var context, controller, rectangle, loop, enemy;
 
 context = document.querySelector("canvas").getContext("2d");
