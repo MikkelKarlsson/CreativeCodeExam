@@ -3,10 +3,10 @@ const imageUpload = document.getElementById('imageUpload')
 
 // Load models
 Promise.all([
-faceapi.nets.faceRecognitionNet.loadFromUri('/recfacesmodels'),
-faceapi.nets.faceLandmark68Net.loadFromUri('/recfacesmodels'),
-//Detection algorithm
-faceapi.nets.ssdMobilenetv1.loadFromUri('/recfacesmodels')
+    faceapi.nets.faceRecognitionNet.loadFromUri('/recfacesmodels'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/recfacesmodels'),
+    //Detection algorithm
+    faceapi.nets.ssdMobilenetv1.loadFromUri('/recfacesmodels')
 ]).then(start)
 
 //Code that runs after all the different models
@@ -17,11 +17,11 @@ async function start() {
     const labeledFaceDescriptors = await loadLabeledImages()
     const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
 
-    let image 
+    let image
     let canvas
 
     document.body.append('Loaded')
-        imageUpload.addEventListener('change', async () => {
+    imageUpload.addEventListener('change', async () => {
 
         if (image) image.remove()
         if (canvas) canvas.remove()
@@ -32,12 +32,15 @@ async function start() {
         canvas = faceapi.createCanvasFromMedia(image)
         container.append(canvas)
 
-        const displaySize = { width: image.width, height: image.height }
+        const displaySize = {
+            width: image.width,
+            height: image.height
+        }
 
         faceapi.matchDimensions(canvas, displaySize)
 
         const detections = await faceapi.detectAllFaces(image)
-        .withFaceLandmarks().withFaceDescriptors()
+            .withFaceLandmarks().withFaceDescriptors()
 
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
         const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
@@ -45,7 +48,9 @@ async function start() {
 
         results.forEach((result, i) => {
             const box = resizedDetections[i].detection.box
-            const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
+            const drawBox = new faceapi.draw.DrawBox(box, {
+                label: result.toString()
+            })
             drawBox.draw(canvas)
         })
     })
@@ -59,11 +64,10 @@ function loadLabeledImages() {
             for (let i = 1; i <= 2; i++) {
                 const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
                 const detections = await faceapi.detectSingleFace(img)
-                .withFaceLandmarks().withFaceDescriptor()
+                    .withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
             }
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
     )
 }
-
